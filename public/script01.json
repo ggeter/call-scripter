@@ -1,0 +1,138 @@
+{
+  "$schema": "Schema/call-script-library-schema.json",
+  "name": "hvac-30-c",
+  "scripts": {
+    "is-system-ok": {
+      "stages": [
+        {
+          "name": "scriptForAllTrades",
+          "scriptRef": "for-all-trades#/scripts/for-all-trades"
+        },
+        {
+          "name": "marketingAndTags",
+          "scriptRef": "service-titan#/scripts/tags-stage"
+        },
+        {
+          "name": "AppointmentTimes",
+          "transitions": [
+            {
+              "stage": "ThankYou"
+            }
+          ],
+          "scriptRef": "service-titan#/scripts/appointment-times"
+        },
+        {
+          "name": "isSystemOK",
+          "transitions": [
+            {
+              "stage": "ACUnitCount",
+              "condition": "$values['question']['isOK'] == 'Yes'"
+            },
+            {
+              "condition": "$values['question']['isOK'] == 'No'",
+              "stage": "NotInspectiont"
+            }
+          ],
+          "scriptRef": "#/Scripts/is-system-ok"
+        },
+        {
+          "name": "IsCentralHeatAir",
+          "transitions": [
+            {
+              "stage": "CantServeEquipment",
+              "condition": "$values['isCentralHeatAir']=='No'"
+            },
+            {
+              "condition": "$values['isCentralHeatAir']=='Yes'",
+              "stage": "Problem"
+            }
+          ],
+          "autoFields": [
+            {
+              "name": "isBookJob",
+              "value": true,
+              "isShared": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "isCentralHeatAir",
+              "type": "select",
+              "data": {
+                "type": "list",
+                "options": [
+                  {
+                    "value": "Yes"
+                  },
+                  {
+                    "value": "No"
+                  }
+                ]
+              },
+              "display": {
+                "viewType": "radio",
+                "name": "[speak]Do you have central heat and air?[/speak]"
+              },
+              "restrictions": {
+                "required": true
+              }
+            },
+            {
+              "name": "customers",
+              "type": "select",
+              "data": {
+                "type": "service",
+                "serviceUri": "http://someURI/with/API/key",
+                "listExpression": "$result.data",
+                "itemExpression": "{Id:$item.id, Name:$item.name}",
+                "valueField": "Id",
+                "textField": "Name",
+                "parameters": "{activeOnly:true}"
+              },
+              "display": {
+                "name": "Please select a tag."
+              },
+              "restrictions": {
+                "required": true
+              }
+            }
+          ]
+        },
+        {
+          "name": "CantServeEquipment",
+          "question": "Sorry, we cannot service this equipment.",
+          "transitions": [
+            {
+              "stage": null
+            }
+          ],
+          "autoFields": [
+            {
+              "name": "jobtype",
+              "expression": [
+                "function(){",
+                "   var mapping = {",
+                "       'TechDamage':'Tech Damage',",
+                "       'WaterDamageRepair':'Water damage repair',",
+                "       'ReplaceWindow':'Custom window replacement',",
+                "       'ReplaceFlooring':'Flooring replacement'",
+                "   };",
+                "   return mapping[$stages['Problem']['problem']];",
+                "}()"
+              ]
+            }
+          ]
+        }
+      ],
+      "global-context": {
+        "move-next-button-caption": [
+          "function() {",
+          " if ($state && $state.isTerminalState && $shared && $sha??",
+          " return 'Book Job';",
+          " }",
+          "}();"
+        ]
+      }
+    }
+  }
+}

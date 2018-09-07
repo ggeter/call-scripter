@@ -1,0 +1,124 @@
+{
+  "$schema": "Schema/call-script-library-schema.json#/",
+  "name": "simple-call-script-library",
+  "scripts": {
+    "simple-call-script": {
+      "global-context": {
+        "move-next-button-caption": [
+          "function() {",
+          " if ($state && $state.isTerminalState && $shared && $sha ???",
+          " return 'Book Job';",
+          " }",
+          "}();"
+        ]
+      },
+      "stages": [
+        {
+          "name": "CustomerSearch",
+          "scriptRef": "service-titan#/scripts/customer-search"
+        },
+        {
+          "name": "Problem",
+          "fields": [
+            {
+              "type": "select",
+              "name": "problem",
+              "data": {
+                "type": "list",
+                "options": [
+                  {
+                    "value": "ACTrouble",
+                    "text": "A/C Trouble"
+                  },
+                  {
+                    "value": "ElectricalTrouble",
+                    "text": "Electrical Trouble"
+                  },
+                  {
+                    "value": "PlumbingTrouble",
+                    "text": "Plumbing Trouble"
+                  }
+                ]
+              },
+              "display": {
+                "viewType": "radio",
+                "name": "[speak]What problem are you having?[/speak]"
+              },
+              "restrictions": {
+                "required": true
+              },
+              "relevancy": {
+                "relevant": true
+              }
+            }
+          ],
+          "autoFields": [
+            {
+              "name": "jobtype",
+              "expression": [
+                "function(){",
+                " var mapping = {",
+                " 'ACTrouble' : 'HVAC',",
+                " 'ElectricalTrouble' : 'Electrical',",
+                " 'PlumbingTrouble' : 'Plumbing'",
+                " };",
+                " return mapping[$stages['Problem']['problem']]",
+                "}()"
+              ],
+              "isShared": true
+            },
+            {
+              "name": "skills",
+              "expression": [
+                "function(){",
+                " var mapping = {",
+                " 'ACTrouble' : 'AC Skill',",
+                " 'ElectricalTrouble' : 'Electrical Skill',",
+                " 'PlumbingTrouble' : 'Plumbing Skill'",
+                " };",
+                " return mapping[$stages['Problem']['problem']]",
+                "}()"
+              ]
+            },
+            {
+              "name": "businessUnit",
+              "expression": [
+                "function(){",
+                "var mapping={",
+                " 'ACTrouble' : 'HVAC',",
+                " 'ElectricalTrouble' : 'Electrical',",
+                " 'PlumbingTrouble' : 'Plumbing'",
+                "};",
+                "return mapping[$stages['Problem']['problem']]",
+                "}()"
+              ],
+              "isShared": true
+            },
+            {
+              "name": "isBookJob",
+              "expression": "true",
+              "isShared": true
+            }
+          ]
+        },
+        {
+          "name": "MarketingAndTags",
+          "scriptRef": "service-titan#/scripts/tags-stage"
+        },
+        {
+          "name": "AppointmentTimes",
+          "scriptRef": "service-titan#/scripts/appointment-times"
+        },
+        {
+          "name": "ThankYou",
+          "question": "[speak]ThankYou.[/speak]",
+          "transitions": [
+            {
+              "stage": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
