@@ -1,42 +1,72 @@
 // client-side js
 // run by the browser each time your view template is loaded
 
-console.log('hello world :o');
+console.log('Scripter Loading -- Copyright 2018+, Greg Geter, greg@geter.co, ggeter@gmail.com');
 
-// our default array of dreams
-const dreams = [
-  'Find and count some sheep',
-  'Climb a really tall mountain',
-  'Wash the dishes'
-];
 
-// define variables that reference elements on our page
-const dreamsList = document.getElementById('dreams');
-const dreamsForm = document.forms[0];
-const dreamInput = dreamsForm.elements['dream'];
 
-// a helper function that creates a list item for a given dream
-const appendNewDream = function(dream) {
-  const newListItem = document.createElement('li');
-  newListItem.innerHTML = dream;
-  dreamsList.appendChild(newListItem);
-}
 
-// iterate through every dream and add it to our page
-dreams.forEach( function(dream) {
-  appendNewDream(dream);
-});
 
-// listen for the form to be submitted and add a new dream when it is
-dreamsForm.onsubmit = function(event) {
-  // stop our form submission from refreshing the page
-  event.preventDefault();
 
-  // get dream value and add it to the list
-  dreams.push(dreamInput.value);
-  appendNewDream(dreamInput.value);
+$(document).ready(function() {
+    var $flowchart = $('#ScripterWorkpace');
+    var $container = $flowchart.parent();
+    
+    var cx = $flowchart.width() / 2;
+    var cy = $flowchart.height() / 2;
+    
+    var data = {
+      operators: {
+        operator1: {
+          top: cy - 100,
+          left: cx - 200,
+          properties: {
+            title: 'Operator 1',
+            inputs: {},
+            outputs: {
+              output_1: {
+                label: 'Output 1',
+              }
+            }
+          }
+        },
+        operator2: {
+          top: cy,
+          left: cx + 140,
+          properties: {
+            title: 'Operator 2',
+            inputs: {
+              input_1: {
+                label: 'Input 1',
+              },
+              input_2: {
+                label: 'Input 2',
+              },
+            },
+            outputs: {}
+          }
+        },
+      },
+      links: {
+        link_1: {
+          fromOperator: 'operator1',
+          fromConnector: 'output_1',
+          toOperator: 'operator2',
+          toConnector: 'input_2',
+        },
+      }
+    };
+    
 
-  // reset form 
-  dreamInput.value = '';
-  dreamInput.focus();
-};
+    // Apply the plugin on a standard, empty div...
+    $flowchart.flowchart({
+      data: data
+    });
+
+    $flowchart.parent().siblings('.delete_selected_button').click(function() {
+      $flowchart.flowchart('deleteSelected');
+    });
+    
+    
+    
+  });
