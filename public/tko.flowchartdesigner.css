@@ -1,0 +1,131 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+
+span {
+    font-style: italic;
+}
+
+ .flowchart_canvas{
+    border: solid 1px #333;
+    background-color: #e0e0e0;
+     width: 100%;
+     height: 3000px;
+}
+
+ /******************************Shape terminal******************************/
+ .shape_terminal_background {
+    width: 100%;
+    height: 100%;
+    background-color: yellowgreen;
+    border-radius: 20px;
+    padding-left:0;
+    border: 1px solid black;
+ }
+
+ .shape_terminal_content {
+     /*Center content*/
+    height: 100%;
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .shape_terminal_background_selected {
+ }
+
+ .shape_terminal_content_selected {
+     border: 1px solid blue;
+ }
+
+ /******************************Shape process******************************/
+  .shape_process_background {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+ }
+
+  .shape_process_content {
+       height: 100%;
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+ .shape_process_background_selected {
+     border: 1px solid blue;
+ }
+
+ .shape_process_content_selected {
+ }
+
+  
+  /******************************Shape decision******************************/
+ .shape_decision_background {
+    
+      background: white;
+     border: 1px solid black;
+/* Rotate */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+/* Rotate Origin */
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+ }
+
+ .shape_decision_content {
+     
+
+    /*Center content*/
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+	
+     height: 100%;
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex; 
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .shape_decision_background_selected {
+ }
+
+ .shape_decision_content_selected {
+     border: 1px solid blue;
+ }
+ /********************************Tests*********************************************/
+ .test_shape_process_content {
+     background-color: yellow;
+ }
